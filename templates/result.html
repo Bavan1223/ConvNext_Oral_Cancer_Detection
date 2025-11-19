@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Analysis Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .result-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 600px;
+            margin: 2rem auto;
+        }
+        .diagnosis-title { color: #2c3e50; font-size: 1.5rem; margin-bottom: 1rem; }
+        .result-value { 
+            font-size: 2.5rem; 
+            font-weight: bold; 
+            /* Dynamic color: Red for Cancerous, Green for Non-Cancerous */
+            color: {% if 'NON' in diagnosis %} #27ae60 {% else %} #e74c3c {% endif %};
+            margin: 1rem 0;
+        }
+        .uploaded-img {
+            max-width: 300px;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            border: 3px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <h1>Oral Cancer Detection</h1>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="result-card">
+                <h2>Analysis Complete</h2>
+                
+                <img src="{{ image_url }}" alt="Uploaded Scan" class="uploaded-img">
+                
+                <div class="diagnosis-box">
+                    <p class="diagnosis-title">Prediction:</p>
+                    <div class="result-value">{{ diagnosis }}</div>
+                    
+                    <p>Confidence Score:</p>
+                    <h3>{{ confidence }}</h3>
+                </div>
+
+                <a href="{{ url_for('index') }}" class="btn-primary" style="margin-top: 20px; display: inline-block;">Analyze Another Image</a>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

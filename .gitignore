@@ -1,0 +1,23 @@
+# --- Large Model Files (Too big for GitHub) ---
+*.pth
+*.h5
+*.keras
+model/oral_cancer_model.pth
+
+# --- Python & Virtual Environments ---
+__pycache__/
+*.pyc
+venv/
+.venv/
+env/
+
+# --- VS Code Settings ---
+.vscode/
+
+# --- Web App Uploads (Don't upload test images) ---
+uploads/
+static/uploads/
+
+# --- OS System Files ---
+.DS_Store
+Thumbs.db

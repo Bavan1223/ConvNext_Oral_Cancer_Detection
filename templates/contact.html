@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Oral Cancer Detection </title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="logo">
+                <h1>Oral Cancer Detection </h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('about') }}" class="active">About</a></li>
+                <li><a href="{{ url_for('contact') }}">contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="Contact-section">
+                <h2>CONTACT </h2>
+                
+                <div class="content-block">
+                    <h3> </h3>
+                    <p>JEEVAN: 7821951656</p>
+                </div>
+
+     </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Oral Cancer Detection AI. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

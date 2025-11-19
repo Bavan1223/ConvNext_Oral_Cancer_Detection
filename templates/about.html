@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Oral Cancer Detection AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="logo">
+                <h1>Oral Cancer Detection AI</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('about') }}" class="active">About</a></li>
+                <li><a href="{{ url_for('contact') }}">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="about-section">
+                <h2>About the Project</h2>
+                
+                <div class="content-block">
+                    <h3> Mission</h3>
+                    <p>Our mission is to leverage artificial intelligence to assist in the early detection of oral cancer, 
+                    making screening more accessible and helping save lives through timely intervention.</p>
+                </div>
+
+                <div class="content-block">
+                    <h3> Technology</h3>
+                    <p>This application uses a state-of-the-art Convolutional Neural Network (CNN) based on the ConvNeXt 
+                    architecture, trained on a diverse dataset of oral cavity images. The model has been optimized to 
+                    distinguish between normal and potentially cancerous tissue with high accuracy.</p>
+                    
+                    <div class="tech-specs">
+                        <div class="spec-item">
+                            <strong>Model Architecture:</strong>
+                            <p>ConvNeXt (Tiny variant)</p>
+                        </div>
+                        <div class="spec-item">
+                            <strong>Framework:</strong>
+                            <p>PyTorch with Flask backend</p>
+                        </div>
+                        <div class="spec-item">
+                            <strong>Input:</strong>
+                            <p>224x224 RGB images</p>
+                        </div>
+                        <div class="spec-item">
+                            <strong>Classes:</strong>
+                            <p>Binary classification (Normal/Cancerous)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-block">
+                    <h3> About Oral Cancer</h3>
+                    <p>Oral cancer is a serious health condition that affects thousands of people worldwide. 
+                    Key facts about oral cancer:</p>
+                    <ul>
+                        <li>Early detection significantly improves survival rates (up to 80-90% 5-year survival for early-stage detection)</li>
+                        <li>Common risk factors include tobacco use, alcohol consumption, and HPV infection</li>
+                        <li>Regular screening and self-examination are crucial for early detection</li>
+                        <li>Symptoms may include persistent mouth sores, lumps, or white/red patches</li>
+                    </ul>
+                </div>
+
+                <div class="content-block">
+                    <h3> Limitations</h3>
+                    <p>While our AI model is designed to assist in screening, it has important limitations:</p>
+                    <ul>
+                        <li>This tool is not a replacement for professional medical diagnosis</li>
+                        <li>Image quality and lighting conditions can affect accuracy</li>
+                        <li>The model may not detect all types of oral lesions or early-stage cancers</li>
+                        <li>False positives and false negatives are possible</li>
+                        <li>Always consult healthcare professionals for proper evaluation</li>
+                    </ul>
+                </div>
+
+                <div class="content-block">
+                    <h3>How It Works</h3>
+                    <ol class="steps-list">
+                        <li><strong>Image Upload:</strong> User uploads an oral cavity image</li>
+                        <li><strong>Preprocessing:</strong> Image is resized and normalized</li>
+                        <li><strong>Analysis:</strong> CNN model processes the image through multiple layers</li>
+                        <li><strong>Classification:</strong> Model predicts normal or cancerous tissue</li>
+                        <li><strong>Results:</strong> Prediction and confidence score are displayed</li>
+                    </ol>
+                </div>
+
+                <div class="content-block disclaimer-box">
+                    <h3>Medical Disclaimer</h3>
+                    <p><strong>This application is for educational and preliminary screening purposes only.</strong> 
+                    It does not provide medical advice, diagnosis, or treatment. Always seek the advice of qualified 
+                    health providers with any questions regarding a medical condition. Never disregard professional 
+                    medical advice or delay seeking it because of something you have read or seen on this application.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Oral Cancer Detection AI. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

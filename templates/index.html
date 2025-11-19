@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oral Cancer Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        /* Inline styles to ensure file input behaves correctly */
+        #fileInput {
+            display: none; /* Keep it hidden */
+        }
+        .preview-section img {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="logo" onerror="this.style.display='none'">
+                <h1>Oral Cancer Detection</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('index') }}" class="active">Home</a></li>
+                <li><a href="{{ url_for('about') }}">About</a></li>
+                <li><a href="{{ url_for('contact') }}">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="hero-section">
+                <h2>Early Detection Saves Lives</h2>
+                <p>Upload an oral cavity image for AI-powered cancer detection analysis</p>
+            </div>
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="alert">
+                        {% for message in messages %}
+                            <p>{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <div class="upload-section">
+                <form action="{{ url_for('predict') }}" method="POST" enctype="multipart/form-data" id="uploadForm">
+                    
+                    <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click();">
+                        <div class="upload-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                        </div>
+                        <h3>Drop image here or click to upload</h3>
+                        <p>Supported formats: JPG, JPEG, PNG (Max 16MB)</p>
+                        
+                        <input type="file" name="file" id="fileInput" accept=".jpg,.jpeg,.png" onchange="handleFileSelect(this)">
+                    </div>
+                    
+                    <div id="preview" class="preview-section" style="display: none;">
+                        <h3>Selected Image:</h3>
+                        <img id="previewImage" src="" alt="Preview">
+                        <button type="button" class="btn-secondary" onclick="resetUpload()">Choose Different Image</button>
+                    </div>
+
+                    <button type="submit" class="btn-primary" id="submitBtn">Analyze Image</button>
+                </form>
+            </div>
+
+            <div class="info-cards">
+                <div class="card">
+                    <h3>AI-Powered</h3>
+                    <p>Advanced deep learning model (ConvNeXt) trained on validated medical datasets.</p>
+                </div>
+                <div class="card">
+                    <h3>Fast Results</h3>
+                    <p>Get instant analysis results in seconds using optimized inference.</p>
+                </div>
+                <div class="card">
+                    <h3>Secure</h3>
+                    <p>Your images are processed locally and not stored permanently.</p>
+                </div>
+            </div>
+
+            <div class="disclaimer">
+                <strong>Medical Disclaimer:</strong> This tool is for educational and screening purposes only. 
+                It does not replace professional medical diagnosis. Please consult a qualified healthcare provider 
+                for proper medical evaluation and treatment.
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Oral Cancer Detection AI. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const previewSection = document.getElementById('preview');
+        const previewImage = document.getElementById('previewImage');
+        const uploadForm = document.getElementById('uploadForm');
+
+        // 1. Handle Click Upload
+        function handleFileSelect(input) {
+            if (input.files && input.files[0]) {
+                showPreview(input.files[0]);
+            }
+        }
+
+        // 2. Show Preview Function
+        function showPreview(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImage.src = e.target.result;
+                uploadArea.style.display = 'none'; // Hide upload box
+                previewSection.style.display = 'block'; // Show preview
+            }
+            reader.readAsDataURL(file);
+        }
+
+        // 3. Reset Upload
+        function resetUpload() {
+            fileInput.value = ''; // Clear input
+            previewImage.src = '';
+            previewSection.style.display = 'none';
+            uploadArea.style.display = 'block';
+        }
+
+        // 4. Drag and Drop Events
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight() { uploadArea.style.borderColor = '#3498db'; uploadArea.style.backgroundColor = '#ecf0f1'; }
+        function unhighlight() { uploadArea.style.borderColor = '#ccc'; uploadArea.style.backgroundColor = ''; }
+
+        uploadArea.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            if (files.length > 0) {
+                fileInput.files = files; // Assign dropped file to input
+                showPreview(files[0]);
+            }
+        }
+
+        // 5. Form Validation on Submit (Replaces 'required' attribute)
+        uploadForm.addEventListener('submit', function(e) {
+            if (fileInput.files.length === 0) {
+                e.preventDefault();
+                alert("Please upload an image before analyzing.");
+            }
+        });
+    </script>
+</body>
+</html>
