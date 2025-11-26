@@ -5,6 +5,7 @@
     <title>Analysis Result</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <style>
+        /* --- Custom Styles for Result Page --- */
         .result-card {
             background: white;
             padding: 2rem;
@@ -14,20 +15,59 @@
             max-width: 600px;
             margin: 2rem auto;
         }
-        .diagnosis-title { color: #2c3e50; font-size: 1.5rem; margin-bottom: 1rem; }
-        .result-value { 
-            font-size: 2.5rem; 
-            font-weight: bold; 
-            /* Dynamic color: Red for Cancerous, Green for Non-Cancerous */
-            color: {% if 'NON' in diagnosis %} #27ae60 {% else %} #e74c3c {% endif %};
-            margin: 1rem 0;
-        }
+
         .uploaded-img {
             max-width: 300px;
+            max-height: 300px;
             border-radius: 10px;
             margin-bottom: 1.5rem;
             border: 3px solid #eee;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
+
+        /* Dynamic Diagnosis Badges */
+        .diagnosis-badge {
+            display: inline-block;
+            padding: 10px 25px;
+            border-radius: 50px;
+            color: white;
+            font-weight: bold;
+            font-size: 1.8rem;
+            margin: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .diagnosis-badge.normal { background: #27ae60; }      /* Green */
+        .diagnosis-badge.cancerous { background: #e74c3c; }   /* Red */
+        .diagnosis-badge.warning { background: #f39c12; }     /* Orange/Yellow */
+
+        /* Clinical Details Box */
+        .clinical-note {
+            background: #f8f9fa;
+            border-left: 5px solid #bdc3c7; /* Default Grey */
+            padding: 15px;
+            margin-top: 20px;
+            text-align: left;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            color: #2c3e50;
+        }
+
+        /* The Blue "Note" Box (For the Ulcer info) */
+        .advisory-box {
+            margin-top: 15px;
+            padding: 12px;
+            background-color: #e8f4f8;
+            border: 1px solid #b3d7ff;
+            border-radius: 6px;
+            color: #004085;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-align: left;
+        }
+        .advisory-icon { font-size: 1.2rem; }
     </style>
 </head>
 <body>
@@ -43,17 +83,46 @@
     <main class="main-content">
         <div class="container">
             <div class="result-card">
-                <h2>Analysis Complete</h2>
                 
-                <img src="{{ image_url }}" alt="Uploaded Scan" class="uploaded-img">
-                
-                <div class="diagnosis-box">
-                    <p class="diagnosis-title">Prediction:</p>
-                    <div class="result-value">{{ diagnosis }}</div>
+                {% if diagnosis == "INVALID IMAGE" %}
+                    <h2 style="color: #f39c12;">⚠️ Analysis Failed</h2>
                     
-                    <p>Confidence Score:</p>
-                    <h3>{{ confidence }}</h3>
-                </div>
+                    <img src="{{ image_url }}" alt="Invalid Image" class="uploaded-img" style="border-color: #f39c12;">
+                    
+                    <div class="clinical-note" style="border-color: #f39c12;">
+                        <strong>Issue:</strong> {{ details }}<br>
+                        {{ note }}
+                    </div>
+
+                {% else %}
+                    <h2>Analysis Complete</h2>
+                    
+                    <img src="{{ image_url }}" alt="Uploaded Scan" class="uploaded-img">
+                    
+                    <div class="diagnosis-box">
+                        <p class="diagnosis-title">Prediction:</p>
+                        
+                        <div class="diagnosis-badge {{ result_class }}">
+                            {{ diagnosis }}
+                        </div>
+                        
+                        <p>Confidence Score:</p>
+                        <h3>{{ confidence }}</h3>
+                    </div>
+
+                    <div class="clinical-note" style="border-color: {% if result_class == 'cancerous' %}#e74c3c{% elif result_class == 'normal' %}#27ae60{% else %}#f39c12{% endif %};">
+                        <strong>Assessment:</strong><br>
+                        {{ details }}
+                    </div>
+
+                    {% if note %}
+                    <div class="advisory-box">
+                        <span class="advisory-icon">ℹ️</span>
+                        <span>{{ note }}</span>
+                    </div>
+                    {% endif %}
+
+                {% endif %}
 
                 <a href="{{ url_for('index') }}" class="btn-primary" style="margin-top: 20px; display: inline-block;">Analyze Another Image</a>
             </div>
